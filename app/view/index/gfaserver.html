@@ -1,0 +1,13 @@
+{extend name="base" /}
+{block name="title"}{$title | default='Undefined Title'}{/block}
+
+{// 使用 <div class="page-content"> 整个DIV 作为页面主体内容}
+{block name="content"}
+
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+<iframe src="http://192.168.87.196:8000/view" width="100%" height="100%"  style="margin-top: 5%">
+    <h2 style="margin-top: 30%">该功能需在华南农业大学园区网内使用</h2>
+</iframe>
+
+
+{/block}

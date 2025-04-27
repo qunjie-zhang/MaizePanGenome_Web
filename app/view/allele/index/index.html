@@ -1,0 +1,36 @@
+{extend name="base" /}
+{block name="title"}{$title | default='Undefined Title'}{/block}
+{// 使用 <div class="page-content"> 整个DIV 作为页面主体内容}
+    {block name="content"}
+    <div class="page-content">
+
+        <div class="row">
+            <div class="col-md-6 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-title">等位基因信息检索</h6>
+                        <form class="forms-sample" method="post" action="{:url('allele/query')->domain(config('app.app_host'))->build()}">
+                            <div class="form-group">
+                                <label for="exampleInputUsername1">基因ID / 名称</label>
+                                <input
+                                        name="gene"
+                                        type="text"
+                                        class="form-control"
+                                        id="exampleInputUsername1"
+                                        autocomplete="off"
+                                        placeholder="Gene ID / Name"/>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary mr-2">
+                                Submit
+                            </button>
+                            <button class="btn btn-light" type="reset">Reset</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    {/block}

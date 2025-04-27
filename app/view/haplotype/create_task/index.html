@@ -1,0 +1,351 @@
+{extend name="base" /}
+{block name="title"}{$title | default='Undefined Title'}{/block}
+{block name="content"}
+
+<link href="{:config('app.app_host')}/assets/vendors/select2/select2.min.css" rel="stylesheet" />
+<link href="{:config('app.app_host')}/assets/vendors/dropzone/dropzone.min.css" rel="stylesheet" />
+<link href="{:config('app.app_host')}/assets/vendors/dropify/dist/dropify.min.css" rel="stylesheet" />
+<link href="{:config('app.app_host')}/assets/css/demo_1/style.css" rel="stylesheet" />
+
+
+    <div class="page-content">
+        <nav class="page-breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">创建任务</li>
+                <li aria-current="page" class="breadcrumb-item active">
+                    单倍型数据分析
+                </li>
+            </ol>
+        </nav>
+        <div class="row">
+            <div class="col-md-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-title">单倍型数据分析</h6>
+                        <p class="card-description">
+                            请填写以下信息以进行单倍型数据分析
+                        </p>
+                        <form method="post" action="{$action}" enctype="multipart/form-data">
+                            <div class="row">
+                                <!--表单左栏-->
+                                <div class="col-md-6 col-12">
+                                    <div class="form-group">
+                                        <label for="title">作业标题</label>
+                                        <input class="form-control" id="title" name="title"
+                                               placeholder="Enter Job title" type="text" value="" required/>
+                                    </div>
+                                    <script>
+                                        <!-- 作业标题默认当前时间 -->
+                                        document.getElementById("title").value =
+                                            new Date().toLocaleString() + " - Default";
+                                    </script>
+
+                                    <div class="form-group">
+                                        <label for="dataset_id">选择一份群体数据</label>
+                                        <select class="form-control" id="dataset_id" name="dataset_id">
+                                        </select>
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <label for="">基因名称 (例: Zm00001eb110260)</label>
+                                        <input type="text" class="form-control" id="gene" value="" name="gene"
+                                               placeholder="输入一个基因名称 " required>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="chr">选择一条染色体</label>
+                                        <input class="form-control" id="chr" name="chr" readonly="readonly" required>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="start">起始位置</label>
+                                        <input class="form-control" id="start" type="number" value="" name="start"
+                                               readonly="readonly" required />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="end">结束位置</label>
+                                        <input class="form-control" id="end" type="number" value="" name="end"
+                                               readonly="readonly" required/>
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <label>使用自定义数据范围 &nbsp; (文件内定义参数优先级高于输入框) <a href="{:url('haplotype/getRangeFile')->domain(config('app.app_host'))->build()}">获取配置文件模板 </a></label>
+                                        <input type="file" name="range_file" class="file-upload-default">
+                                        <div class="input-group col-xs-12">
+                                            <input type="text" class="form-control file-upload-info" disabled="" placeholder="文件上传">
+                                            <span class="input-group-append">
+                                            <button disabled id="range_file" class="file-upload-browse btn btn-primary" type="button">自定义配置</button>
+                                            </span>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <label for="">单倍型前缀</label>
+                                        <input type="text" class="form-control" id="" value="H" name="prefix"
+                                               placeholder="输入一个单倍型前缀 " required>
+                                    </div>
+                                </div>
+
+                                <!--表单右栏-->
+                                <div class="col-md-6 col-12">
+                                    <div class="form-group">
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="checkbox" name="na_drop" checked/>
+                                                移除包含基因型缺失的样本
+                                            </label>
+                                        </div>
+
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="checkbox" name="hetero_remove" checked/>
+                                                移除包含杂合位点的样本
+                                            </label>
+                                        </div>
+
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="checkbox" name="custom_pos"/>
+                                                使用自定义起止位置
+                                            </label>
+                                        </div>
+
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="checkbox" name="filter_vcf_mode" checked/>
+                                                使用GFF注释过滤VCF
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>过滤类型 (当启用GFF过滤时该项生效)</label>
+                                        <select class="filter_vcf_type w-100" multiple="multiple" name="filter_vcf_type[]">
+                                            <option value="CDS" selected>CDS</option>
+                                            <option value="exon">exon</option>
+                                            <option value="gene">gene</option>
+                                            <option value="five_prime_UTR">five_prime_UTR</option>
+                                            <option value="three_prime_UTR">three_prime_UTR</option>
+                                        </select>
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <label>上传自定义关联信息文件 (表头：name,group)</label>
+                                        <input type="file" name="acc_file" class="file-upload-default">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control file-upload-info" disabled="" placeholder="Upload ACC csv file">
+                                            <span class="input-group-append">
+                                            <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>上传自定义表型文件 <a href="https://static-content.springer.com/esm/art%3A10.1186%2Fs12859-023-05318-9/MediaObjects/12859_2023_5318_MOESM4_ESM.tsv">示例文件</a></label>
+                                        <input type="file" name="pheo_file" class="file-upload-default">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control file-upload-info" disabled="" placeholder="Upload Pheo csv file">
+                                            <span class="input-group-append">
+                                            <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                                            </span>
+                                        </div>
+                                    </div>
+
+
+
+
+
+                                    <button type="submit" class="btn btn-primary btn-block">提交任务</button>
+                                    <button type="reset" class="btn btn-danger btn-block">重置表单</button>
+                                </div>
+
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<script src="{:config('app.app_host')}/assets/vendors/jquery-validation/jquery.validate.min.js"></script>
+<script src="{:config('app.app_host')}/assets/vendors/select2/select2.min.js"></script>
+<script src="{:config('app.app_host')}/assets/vendors/jquery-tags-input/jquery.tagsinput.min.js"></script>
+<script src="{:config('app.app_host')}/assets/vendors/dropify/dist/dropify.min.js"></script>
+<script src="{:config('app.app_host')}/assets/vendors/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.js"></script>
+<script src="{:config('app.app_host')}/assets/vendors/feather-icons/feather.min.js"></script>
+
+
+<script>
+    $(document).ready(function() {
+        // 获取数据集
+        $.ajax({
+            url: '{:url("haplotype/datasetGetList")->domain(config("app.app_host"))->build()}',
+            method: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                $.each(data, function(index, item) {
+                    $('#dataset_id').append($('<option>', {
+                        value: item.id,
+                        text: item.name
+                    }));
+                });
+                // 触发数据集选择变化事件以加载染色体列表
+                $('#dataset').trigger('change');
+            },
+            error: function(xhr, status, error) {
+                console.error('请求失败:', error);
+            }
+        });
+
+
+        // 监听基因ID输入变化
+        $('#gene').on('input focus', function() {
+            var geneId = $(this).val();
+            var datasetId = $('#dataset_id').val();
+            if (geneId && datasetId) {
+                // 获取基因信息
+                $.ajax({
+                    url: '{:url("haplotype/getGeneInfo")->domain(config("app.app_host"))->build()}',
+                    method: 'GET',
+                    data: { dataset_id: datasetId, gene_id: geneId },
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.status) {
+                            var geneData = response.data;
+                            $('#chr').val(geneData.chr);
+                            $('#start').val(geneData.start);
+                            $('#end').val(geneData.end);
+                            $('#gene').removeClass('is-invalid');
+                            $('#gene').addClass('is-valid');
+                            $('.invalid-feedback').remove();
+                        } else {
+                            $('#gene').removeClass('is-valid');
+                            $('#gene').addClass('is-invalid');
+                            if (!$('.invalid-feedback').length) {
+                                $('#gene').after('<div class="invalid-feedback">数据集中不存在该基因名称，请勾选自定义起止位置手工输入位置信息</div>');
+                            }
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('请求失败:', error);
+                    }
+                });
+            }
+        });
+
+
+        // 监听表单提交事件 如果基因名称不合法且非自定义位置则阻止提交
+        $('form').on('submit', function(event) {
+            event.preventDefault(); // 阻止默认表单提交
+
+            if ($('#gene').hasClass('is-invalid') && !$('#gene').prop('disabled')) {
+                alert('基因名称无效，请勾选自定义起止位置手工输入位置信息');
+                return;
+            }
+
+            // 使用 FormData 对象获取表单数据
+            var formData = new FormData(this);
+
+            // 发送 AJAX 请求
+            $.ajax({
+                url: '{:url("haplotype/action")->domain(config("app.app_host"))->build()}',
+                method: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                dataType: 'json',
+                success: function(response) {
+                    if (response.status) {
+                        alert('[SUCCESS]: ' + response.msg);
+                        location.reload();
+                    } else {
+                        alert('[FAILED]: ' + response.msg);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('请求失败:', error);
+                    alert('提交失败，请稍后重试');
+                }
+            });
+        });
+
+        // 当上传文件框内有待上传位置配置文件的时候,染色体,起始位置与结束位置输入框可以不用填写
+        $('input[name="range_file"]').on('change', function() {
+            if ($(this).val()) {
+                // 如果有文件被选择，移除起始位置和结束位置输入框的 required 属性
+                $('#chr').prop('required', false);
+                $('#start').prop('required', false);
+                $('#end').prop('required', false);
+            } else {
+                // 如果没有文件被选择，添加起始位置和结束位置输入框的 required 属性
+                $('#chr').prop('required', true);
+                $('#start').prop('required', true);
+                $('#end').prop('required', true);
+            }
+        });
+
+        // 实例化 select2
+        $(function () {
+            "use strict";
+            // if ($(".gene").length) {
+            //     $(".gene").select2();
+            // }
+            // if ($(".chr").length) {
+            //     $(".chr").select2();
+            // }
+            if ($(".filter_vcf_type").length) {
+                $(".filter_vcf_type").select2();
+            }
+        });
+
+        // // 实例化 dropify
+        // $(function() {
+        //     'use strict';
+        //     $('#myDropify').dropify();
+        // });
+
+        // 监听“使用自定义起止位置”复选框的变化
+        $('input[name="custom_pos"]').change(function() {
+            if ($(this).is(':checked')) {
+                // 勾选时禁用基因名称输入框，启用起止位置输入框
+                $('#gene').prop('readonly', true);
+                $('#chr').prop('readonly', false);
+                $('#start').prop('readonly', false);
+                $('#end').prop('readonly', false);
+                $('#range_file').prop('disabled', false);
+                $('#gene').removeClass('is-invalid');
+                $('#gene').removeClass('is-valid');
+            } else {
+                // 取消勾选时启用基因名称输入框，禁用起止位置输入框
+                $('#gene').prop('readonly', false);
+                $('#chr').prop('readonly', true);
+                $('#start').prop('readonly', true);
+                $('#end').prop('readonly', true);
+                $('#range_file').prop('disabled', true);
+            }
+        });
+    });
+
+    $(function() {
+        'use strict';
+        $(function() {
+            $('.file-upload-browse').on('click', function(e) {
+                var file = $(this).parent().parent().parent().find('.file-upload-default');
+                file.trigger('click');
+            });
+            $('.file-upload-default').on('change', function() {
+                $(this).parent().find('.form-control').val($(this).val().replace(/C:\\fakepath\\/i, ''));
+            });
+        });
+    });
+
+
+</script>
+
+    {/block}

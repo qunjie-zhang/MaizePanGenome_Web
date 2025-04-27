@@ -1,0 +1,11 @@
+{extend name="base" /}
+{block name="title"}{$title | default='Undefined Title'}{/block}
+
+{// 使用 <div class="page-content"> 整个DIV 作为页面主体内容}
+{block name="content"}
+
+    <iframe src="http://12.12.12.202:8000/" height="100%" style="margin-top: 5%">
+        12.12.12.202:8000 is Running ?
+    </iframe>
+
+{/block}

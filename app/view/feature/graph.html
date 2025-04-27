@@ -1,0 +1,55 @@
+{extend name="base" /}
+{block name="title"}{$title | default='Undefined Title'}{/block}
+
+{// 使用 <div class="page-content"> 整个DIV 作为页面主体内容}
+{block name="content"}
+
+    <div class="page-content">
+        <nav class="page-breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#"># </a></li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    图形泛基因组可视化
+                </li>
+            </ol>
+        </nav>
+        <div class="row">
+            <div class="col-md-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h1 class="card-title">ODGI RESULT</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-title">RESULT # 1</h6>
+                        <img
+                                src="../../../assets/feature_images/1.png"
+                                style="width: 100%"
+                                alt="item-image"
+                        />
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-title">RESULT # 2</h6>
+                        <img
+                                src="../../../assets/feature_images/2.webp"
+                                style="width: 100%"
+                                alt="item-image"
+                        />
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+{/block}

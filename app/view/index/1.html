@@ -1,0 +1,8 @@
+{extend name="base" /}
+{block name="title"}{$title | default='Undefined Title'}{/block}
+
+{// 使用 <div class="page-content"> 整个DIV 作为页面主体内容}
+{block name="content"}
+    <h1>INDEX</h1>
+    <p>Welcome! This is a simple example.</p>
+{/block}

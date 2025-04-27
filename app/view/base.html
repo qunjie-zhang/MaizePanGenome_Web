@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{block name='title'} Undefined:/app/view/base.html {/block}</title>
+
+    <link rel="stylesheet" href="{:config('app.app_host')}/assets/vendors/core/core.css">
+    <link rel="stylesheet" href="{:config('app.app_host')}/assets/fonts/feather-font/css/iconfont.css">
+    <link href="{:config('app.app_host')}/assets/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="{:config('app.app_host')}/assets/vendors/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
+    <link href="{:config('app.app_host')}/fonts/feather-font/css/iconfont.css" rel="stylesheet" />
+    <link rel="stylesheet" href="{:config('app.app_host')}/assets/css/demo_1/style.css">
+
+    <script src="{:config('app.app_host')}/assets/vendors/core/core.js"></script>
+    <script src="{:config('app.app_host')}/assets/vendors/feather-icons/feather.min.js"></script>
+    <script src="{:config('app.app_host')}/assets/js/template.js"></script>
+
+</head>
+<body>
+<div class="main-wrapper">
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <a href="#" class="sidebar-brand">
+                Maize<span>PanGenome</span>
+            </a>
+            <div class="sidebar-toggler not-active">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        <div class="sidebar-body">
+            <ul class="nav">
+                <li class="nav-item nav-category">导航</li>
+                <li class="nav-item">
+                    <a href="{:url('index/index')->domain(config('app.app_host'))->build()}" class="nav-link">
+                        <i class="link-icon" data-feather="box"></i>
+                        <span class="link-title">概览</span>
+                    </a>
+                </li>
+
+
+                <li class="nav-item nav-category">作业调度</li>
+
+                <li class="nav-item">
+                    <a href="{:url('job/index')->domain(config('app.app_host'))->build()}" class="nav-link">
+                        <i class="link-icon" data-feather="message-square"></i>
+                        <span class="link-title">管理任务</span>
+                    </a>
+                </li>
+                <li class="nav-item nav-category">下载</li>
+
+
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="collapse" href="#download" role="button" aria-expanded="false" aria-controls="download">
+                        <i class="link-icon" data-feather="codepen"></i>
+                        <span class="link-title">原始数据下载</span>
+                        <i class="link-arrow" data-feather="chevron-down"></i>
+                    </a>
+                    <div class="collapse" id="download">
+                        <ul class="nav sub-menu">
+                            <li class="nav-item">
+                                <a href="{:url('download/expression_species')->domain(config('app.app_host'))->build()}" class="nav-link">按样本名称下载数据</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{:url('download/expression_gene')->domain(config('app.app_host'))->build()}" class="nav-link">按基因名称下载数据</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{:url('download/group')->domain(config('app.app_host'))->build()}" class="nav-link">共线性数据</a>
+                            </li>
+
+                        </ul>
+                    </div>
+
+
+                <!-- <li class="nav-item">
+                    <a href="{:url('job/index')->domain(config('app.app_host'))->build()}" class="nav-link">
+                        <i class="link-icon" data-feather="message-square"></i>
+                        <span class="link-title">顺式调控元件搜索</span>
+                    </a>
+                </li> -->
+
+                <li class="nav-item nav-category">基因组浏览器</li>
+                <li class="nav-item">
+                    <a href="{:config('app.app_host')}/jbrowse/?config=b73/config.json" class="nav-link">
+                        <i class="link-icon" data-feather="message-square"></i>
+                        <span class="link-title">JBrowse (B73)</span>
+                    </a>
+                </li>
+
+                <li class="nav-item nav-category">基因注释与表达量 (仅校内访问)</li>
+
+                <li class="nav-item">
+                    <a href="http://192.168.87.196:81/records/go.html" class="nav-link">
+                        <i class="link-icon" data-feather="message-square"></i>
+                        <span class="link-title">GO</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="http://192.168.87.196:81/records/interproscan.html" class="nav-link">
+                        <i class="link-icon" data-feather="message-square"></i>
+                        <span class="link-title">InterProScan</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="http://192.168.87.196:81/records/kegg.html" class="nav-link">
+                        <i class="link-icon" data-feather="message-square"></i>
+                        <span class="link-title">KEGG</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="http://192.168.87.196:81/records/transcript.html" class="nav-link">
+                        <i class="link-icon" data-feather="message-square"></i>
+                        <span class="link-title">Transcript</span>
+                    </a>
+                </li>
+
+                <li class="nav-item nav-category">分析模块</li>
+
+<!--                <li class="nav-item">-->
+<!--                    <a href="{:url('job/index')->domain(config('app.app_host'))->build()}" class="nav-link">-->
+<!--                        <i class="link-icon" data-feather="message-square"></i>-->
+<!--                        <span class="link-title">样本信息查询</span>-->
+<!--                    </a>-->
+<!--                </li>-->
+
+
+                <li class="nav-item">
+                    <a href="http://192.168.87.196:8000/view" class="nav-link">
+                        <i class="link-icon" data-feather="message-square"></i>
+                        <span class="link-title">泛蛋白编码基因可视化</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="collapse" href="#haplotypes" role="button" aria-expanded="false" aria-controls="haplotypes">
+                        <i class="link-icon" data-feather="codepen"></i>
+                        <span class="link-title">单倍型数据分析</span>
+                        <i class="link-arrow" data-feather="chevron-down"></i>
+                    </a>
+                    <div class="collapse" id="haplotypes">
+                        <ul class="nav sub-menu">
+                            <li class="nav-item">
+                                <a href="{:url('haplotype/createTask')->domain(config('app.app_host'))->build()}" class="nav-link">创建任务</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link" disabled>数据集管理</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                <li class="nav-item">
+                    <a href="http://192.168.87.196:81/blast.html" class="nav-link">
+                        <i class="link-icon" data-feather="message-square"></i>
+                        <span class="link-title">BLAST</span>
+                    </a>
+                </li>
+
+                <li class="nav-item nav-category">用户账户</li>
+
+<!--                <li class="nav-item">-->
+<!--                    <a href="{:url('user/logout')->domain(config('app.app_host'))->build()}" class="nav-link">-->
+<!--                        <i class="link-icon" data-feather="box"></i>-->
+<!--                        <span class="link-title">修改密码</span>-->
+<!--                    </a>-->
+<!--                </li>-->
+                <li class="nav-item">
+                    <a href="{:url('user/logout')->domain(config('app.app_host'))->build()}" class="nav-link">
+                        <i class="link-icon" data-feather="box"></i>
+                        <span class="link-title">退出登录</span>
+                    </a>
+                </li>
+
+                <li class="nav-item nav-category">Docs</li>
+                <li class="nav-item">
+                    <a href="#"  class="nav-link">
+                        <i class="link-icon" data-feather="hash"></i>
+                        <span class="link-title">平台文档</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#"  class="nav-link">
+                        <i class="link-icon" data-feather="hash"></i>
+                        <span class="link-title">API接口</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="page-wrapper">
+        <nav class="navbar">
+            <a href="#" class="sidebar-toggler">
+                <i data-feather="menu"></i>
+            </a>
+            <div class="navbar-content">
+                <form class="search-form">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                <i data-feather="search"></i>
+                            </div>
+                        </div>
+                        <input type="text" class="form-control" id="navbarForm" placeholder="Search here...">
+                    </div>
+                </form>
+            </div>
+        </nav>
+
+        {//  <div class="page-content"> 作为页面主要内容 包含该DIV}
+        {block name="content"}CONTENT{/block}
+
+        <footer class="footer d-flex flex-column flex-md-row align-items-center justify-content-between">
+            <p class="text-muted text-center text-md-left">Copyright <script>document.write(new Date().getFullYear())</script>. 华南农业大学生物信息学实验室 All rights reserved</p>
+            <p class="text-muted text-center text-md-left mb-0 d-none d-md-block"></p>
+        </footer>
+    </div>
+    </div>
+</body>
+</html>

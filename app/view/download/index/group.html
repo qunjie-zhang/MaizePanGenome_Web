@@ -1,0 +1,34 @@
+{extend name="base" /}
+{block name="title"}{$title | default='Undefined Title'}{/block}
+
+{// 使用 <div class="page-content"> 整个DIV 作为页面主体内容}
+    {block name="content"}
+
+    <div class="page-content">
+
+        <nav class="page-breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">原始数据下载</li>
+                <li aria-current="page" class="breadcrumb-item active">
+                    共线性数据
+                </li>
+            </ol>
+        </nav>
+
+        <div class="row">
+            <div class="col-md-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-title">共线性相关数据下载</h6>
+                        <p class="card-description">相关在线检索功能建设中</p>
+
+                        <a href="{:config('app.app_host')}/data/group/group.blocks" class="btn btn-primary active" role="button" aria-pressed="true">Table 格式</a>
+                        <a href="{:config('app.app_host')}/data/group/group.json" class="btn btn-primary active" role="button" aria-pressed="true">Json 格式</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    {/block}

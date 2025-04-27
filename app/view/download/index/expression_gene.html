@@ -1,0 +1,79 @@
+{extend name="base" /}
+{block name="title"}{$title | default='Undefined Title'}{/block}
+
+{// 使用 <div class="page-content"> 整个DIV 作为页面主体内容}
+    {block name="content"}
+
+    <link href="{:config('app.app_host')}/assets/vendors/datatable/datatables.min.css" rel="stylesheet">
+    <script src="{:config('app.app_host')}/assets/vendors/datatable/datatables.min.js"></script>
+    <div class="page-content">
+
+        <nav class="page-breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">原始数据下载</li>
+                <li aria-current="page" class="breadcrumb-item active">
+                    按基因名称下载数据
+                </li>
+            </ol>
+        </nav>
+
+        <div class="row">
+            <div class="col-md-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-title">按基因名称下载数据</h6>
+                        <p class="card-description">主要包含：FPKM,TPM,蛋白文件...</p>
+                        <div class="table-responsive">
+                            <table id="dashboard" class="table">
+                                <thead>
+                                <tr>
+                                    <th>名称</th>
+                                    <th>大小</th>
+                                    <th>MD5</th>
+                                    <th>下载</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            // AJAX 请求获取数据
+            $.ajax({
+                url: "{:config('app.app_host')}/data/expression/class_gene/file_info.json",
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    $('#dashboard').DataTable({
+                        data: data, // 将获取到的数据传入 DataTable
+                        order: [[0, 'desc']],
+                        columns: [
+                            { data: 'name' },
+                            { data: 'size' },
+                            { data: 'md5'},
+                            {
+                                data: 'name',
+                                render: function(data) {
+                                    return '<a href="{:config(\'app.app_host\')}/data/expression/class_gene/' + data + '" class="btn btn-primary btn-sm">DOWNLOAD</a>';
+                                }
+                            },
+                        ],
+                        lengthMenu: [10, 30, 50, 100, 200],
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error('请求失败:', error);
+                    alert('加载数据失败，请稍后重试');
+                }
+            });
+        });
+    </script>
+
+    {/block}
